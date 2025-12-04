@@ -1,28 +1,30 @@
 pipeline {
+    agent any
 
-	agent any
-	tools {
-		maven 'm360'
-	}
+    stages {
 
-	stages {
-	  stage('build') {
-		steps {
-		  sh 'mvn install -DskipTests'
-		}
-	  }
+        stage('Clean') {
+            steps {
+                sh 'mvn clean'
+            }
+        }
 
-	  stage('test') {
-		steps {
-		  sh 'mvn test'
-		  
-		  post {
-				archiveArtifacts artifacts: 'target/**.jar', followSymlinks: false
-				junit stdioRetention: '', testResults: 'target/surefire-reports/*.xml'
-			}
-		}
-	  }
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
 
-}
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
 
+        stage('Build') {
+            steps {
+                sh 'mvn install'
+            }
+        }
+    }
 }

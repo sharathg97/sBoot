@@ -1,30 +1,23 @@
 pipeline {
-    agent any
-
-    stages {
-
-        stage('Clean') {
-            steps {
-                sh 'mvn clean'
-            }
+agent any
+tools {
+          jdk 'java8'   
         }
-
-        stage('Compile') {
-            steps {
-                sh 'mvn compile'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'mvn install'
-            }
-        }
-    }
+stages {
+  stage('compile'){
+    steps {
+  sh 'mvn compile'
+  }
+  }
+  stage('test')
+  { steps {
+  sh 'mvn test'
+  }
+  }
+  stage('build'){
+    steps {
+  sh 'mvn clean install'
+}
+  }
+}
 }
